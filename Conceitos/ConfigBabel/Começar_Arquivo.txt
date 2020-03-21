@@ -1,0 +1,12 @@
+Para criar o arquivo package.json é necessario utilizar o comando:
+
+    yarn init
+        apos pode ser dado enter para todas as perguntas
+
+comando para adicionar dependencias ao projeto é:
+
+    yarn add
+        utilizando esse comando vou colocar:
+            @babel/cli 
+            @babel/preset-env
+            @babel/core
