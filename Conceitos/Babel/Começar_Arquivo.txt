@@ -1,0 +1,18 @@
+Para criar o arquivo package.json é necessario utilizar o comando:
+
+    yarn init
+        apos pode ser dado enter para todas as perguntas
+
+comando para adicionar dependencias ao projeto é:
+
+    yarn add
+        utilizando esse comando vou colocar:
+            @babel/cli 
+            @babel/preset-env
+            @babel/core
+
+ Para trabalhar com o GIT não tem a necessidade de enviar a pasta "node_modules".
+ Para isso é criado um arquivo chamado ".gitignore" e destro dele coloco a pasta a qual não quero que seja enviada.
+
+ Criado um aruivo chamado ".babelrc" no qual será responsavel em transformar o codigo feito em ES6 para outras versões do ECMA,
+ sendo reconhecido pelos dispositivos que não tem a versão do ES6. 
