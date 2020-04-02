@@ -16,3 +16,8 @@ comando para adicionar dependencias ao projeto é:
 
  Criado um aruivo chamado ".babelrc" no qual será responsavel em transformar o codigo feito em ES6 para outras versões do ECMA,
  sendo reconhecido pelos dispositivos que não tem a versão do ES6. 
+
+    para utilizar o rest e spread é necessario instalar os pacotes deles.
+    yarn add @babel/plugin-proposal-object-rest-spread
+    apos a instalação é necessario colocar ele no arquivo .babelrc chamando como:
+    
