@@ -1,0 +1,4 @@
+{
+    "presets": ["@babel/preset-env"], // entender qual o ambiente esta sendo utilizado para fazer a conversão do codigo
+    "plugins": ["@babel/plugin-proposal-object-rest-spread"]
+}

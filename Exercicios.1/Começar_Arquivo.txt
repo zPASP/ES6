@@ -1,0 +1,42 @@
+Para criar o arquivo package.json é necessario utilizar o comando:
+
+    yarn init
+        apos pode ser dado enter para todas as perguntas
+
+comando para adicionar dependencias ao projeto é:
+
+    yarn add
+        utilizando esse comando vou colocar:
+            @babel/cli 
+            @babel/preset-env
+            @babel/core
+
+ Para trabalhar com o GIT não tem a necessidade de enviar a pasta "node_modules".
+ Para isso é criado um arquivo chamado ".gitignore" e destro dele coloco a pasta a qual não quero que seja enviada.
+
+ Apos a criação automatica do arquivo "package.json" é necessario iniciar um script que será responsavel pelo babel
+    "scripts": {
+        "dev": "babel ./objShort.js -o ./bundle.js -w"
+    
+    dev : nome do script. o mesmo será utilizado para chamar o script
+    -o : fazer a conversão do codigo para o arquivo solicitado
+    -w : fica escutando o arquivo a espera de alteração e atualizando o mesmo conforme tem alteração
+
+Na raiz da pasta é executado um terminal e se chama o script para ficar escutando o arquivo:
+    yarn dev
+
+
+ Criado um aruivo chamado ".babelrc" no qual será responsavel em transformar o codigo feito em ES6 para outras versões do ECMA,
+ sendo reconhecido pelos dispositivos que não tem a versão do ES6. 
+    detro do ".babelrc" é colocado a seguinte linha:
+            {
+                "presets": ["@babel/preset-env"]
+            }
+        o qual é responsalvel pela conversão do codigo.
+
+
+    para utilizar o rest e spread é necessario instalar os pacotes deles.
+    yarn add @babel/plugin-proposal-object-rest-spread
+    apos a instalação é necessario colocar ele no arquivo .babelrc chamando como:
+    "plugins": "@babel/plugin-proposal-object-rest-spread"
+    
