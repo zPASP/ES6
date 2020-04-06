@@ -96,12 +96,60 @@ Na raiz da pasta é executado um terminal e se chama o script para ficar escutan
     é instalada a dependencia:
         yarn add babel-loader
     
-Dentro do arquivo "package.json" no script "dev" não será mais utilizado direto do babel como aquivo responsavel pela conversão e sim o Webpack:
-    "scripts": {
-        "dev": "webpack --mode=development -w"
-    }
-        --mode=development : modo de execução é definido como desenvolvimento.
-        -w : fica escutando o arquivo para qualquer alterção ja ser feita a conversão do ES6 automaticamente
+    Dentro do arquivo "package.json" no script "dev" não será mais utilizado direto do babel como aquivo responsavel pela conversão e sim o Webpack:
+        "scripts": {
+            "dev": "webpack --mode=development -w"
+        }
+            --mode=development : modo de execução é definido como desenvolvimento.
+            -w : fica escutando o arquivo para qualquer alterção ja ser feita a conversão do ES6 automaticamente...
+
+++++---  WEBPACK DEV SERVER  ---++++
+    Na raiz do projeto é criada duas novas pasta:
+        "public"
+        "src"
+            src: ficará todo o codigo JS utilizado na aplicação e/ou os arquivos que o webpack precisa monitorar as mudanças.
+            public: firará os arquivos que não precisam ser monitorados pelo webpack.
+                ** o arquivo bundle fica dentro do public porem ele pode ser alterado por conta de ser criado um novo ao executar o webpack.
+            
+    O arquivo "webpack.config.js" sofre algumas alterções.
+        module.exports = {
+                entry: './src/main'   // o main foi para dentro da pasta src
+                output: {
+                    path: __dirname + '/public', // o arquivo não será mais mandado para raiz e sim para a pasta public
+                    filename: 'bundle.js'
+                },
+                devServer: {
+                    contentBase: __dirname + '/public'
+                },
+                module: {
+                    rules: [
+                        {
+                            test: /\.js$/
+                            exclude : /node_modules/,
+                            use: {
+                                loader: 'babel-loader',
+                            }
+
+                        }
+                    ],
+                },
+            };
+                devServer:
+                    contentBase : caminho onde sera inicializado o servidor
+
+    Necessario fazer a instalação do devServer
+        yarn add webpack-dev-server -D // instalado como dependencia de desenvolvimento
+    
+    O arquivo "package.json" sobre algumas alterações no script dev:
+        "dev" : "webpack-dev-server --mode=development"
+
+    O arquivo "bundle" em modo de desenvolvimento fica imbutido no arquivo main.
+    Para que ele apareça é necessario colocar em modo de produção.
+    Assim pode ser criado um novo script para produção:
+        no arquivo "package.json"
+            "build" : "webpack --mode=production"
+
+
 
 
                 
