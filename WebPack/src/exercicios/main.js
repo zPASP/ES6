@@ -7,4 +7,3 @@ console.log(idade);
 
 usuario.info();
 console.log(IdadeUsuario)
-

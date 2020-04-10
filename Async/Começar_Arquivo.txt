@@ -1,0 +1,184 @@
+Para criar o arquivo package.json é necessario utilizar o comando:
+
+    yarn init
+        apos pode ser dado enter para todas as perguntas
+
+comando para adicionar dependencias ao projeto é:
+
+    yarn add
+        utilizando esse comando vou colocar:
+            @babel/cli 
+            @babel/preset-env
+            @babel/core
+
+ Para trabalhar com o GIT não tem a necessidade de enviar a pasta "node_modules".
+ Para isso é criado um arquivo chamado ".gitignore" e destro dele coloco a pasta a qual não quero que seja enviada.
+
+ Apos a criação automatica do arquivo "package.json" é necessario iniciar um script que será responsavel pelo babel
+    "scripts": {
+        "dev": "babel ./objShort.js -o ./bundle.js -w"
+    
+    dev : nome do script. o mesmo será utilizado para chamar o script
+    -o : fazer a conversão do codigo para o arquivo solicitado
+    -w : fica escutando o arquivo a espera de alteração e atualizando o mesmo conforme tem alteração
+
+Na raiz da pasta é executado um terminal e se chama o script para ficar escutando o arquivo:
+    yarn dev
+
+
+ Criado um aruivo chamado ".babelrc" no qual será responsavel em transformar o codigo feito em ES6 para outras versões do ECMA,
+ sendo reconhecido pelos dispositivos que não tem a versão do ES6. 
+    detro do ".babelrc" é colocado a seguinte linha:
+            {
+                "presets": ["@babel/preset-env"]
+            }
+        o qual é responsalvel pela conversão do codigo.
+
+
+    para utilizar o rest e spread é necessario instalar os pacotes deles.
+    yarn add @babel/plugin-proposal-object-rest-spread
+    apos a instalação é necessario colocar ele no arquivo .babelrc chamando como:
+    "plugins": "@babel/plugin-proposal-object-rest-spread"
+
+
+++++---  WEBPACK  ---++++
+
+    Por conta do babel só ser utilizado apenas no ambiente de desenvolvimento as dependencias instaladas não são utilizadas no arquivo final do projeto
+    ficando tudo em apenas um arquivo final. Por conta disso no arquivo "package.json" terá algumas mudanças
+        Arquivo "package.json":
+            de "dependencies" para "devDependencies"..
+                    Frizando o "D" deve ser maiusculo.
+    
+    Agora sempre que for ser instalada uma nova dependencias só adicionar o -D no final do codigo para ser considerada no ambiente de desenvolvimento
+
+    É adicionado o webpack ao projeto.
+        yarn add webpack webpack-cli -D
+    
+    com o webpack instalado é criado o arquivo de configuração dele.
+        nome do arquivo: "webpack.config.js"
+        Dentro desse arquivo é iniciada a sintaxe do webpack
+            module.exports = {
+                entry: './main'
+                output: {
+                    path: __dirname,
+                    filename: 'bundle.js'
+                },
+                module: {
+                    rules: [
+                        {
+                            test: /\.js$/
+                            exclude : /node_modules/,
+                            use: {
+                                loader: 'babel-loader',
+                            }
+
+                        }
+                    ],
+                },
+            };
+
+                entry : arquivo principal do JS sem estar convertido, o mesmo declarado no script dev dentro do package.json
+                output : arquivo de saida, o qual será enviado o codigo convertido do ES6, contendo mais de um parametro de definição.
+                    path: pasta para onde o arquivo será enviado
+                        __dirname : significa pasta raiz do projeto.
+                    filename: significa do nome do arquivo
+                module: É uma configuração responsalvel por dizer como o webpack deve se comportar quando tiver importação de arquivo js
+                    rules: será informado dentro das extenções do arquivo qual o loader será utilizado sem ter a necessidade de continuar rodando o 
+                    babel em backgraund para conversão.
+                        test:
+                            /.../ : expressão regular 
+                            \. : equivalente ao * . significa qualquer caractere
+                            js$ : o js é o final dos arquivos a ser procurado. $ confirma que é o final do arquivo.
+                        exclude: informa a pasta que não quer que seja feita a verredura para a execução do babel nos arquivos.
+                        use: onde será informada do modulo que sera utilizada para fazer as configurações solicitada.
+                            loader: comando para chamar a dependencia solicitada.
+    
+    é instalada a dependencia:
+        yarn add babel-loader
+    
+    Dentro do arquivo "package.json" no script "dev" não será mais utilizado direto do babel como aquivo responsavel pela conversão e sim o Webpack:
+        "scripts": {
+            "dev": "webpack --mode=development -w"
+        }
+            --mode=development : modo de execução é definido como desenvolvimento.
+            -w : fica escutando o arquivo para qualquer alterção ja ser feita a conversão do ES6 automaticamente...
+
+++++---  WEBPACK DEV SERVER  ---++++
+    Na raiz do projeto é criada duas novas pasta:
+        "public"
+        "src"
+            src: ficará todo o codigo JS utilizado na aplicação e/ou os arquivos que o webpack precisa monitorar as mudanças.
+            public: firará os arquivos que não precisam ser monitorados pelo webpack.
+                ** o arquivo bundle fica dentro do public porem ele pode ser alterado por conta de ser criado um novo ao executar o webpack.
+            
+    O arquivo "webpack.config.js" sofre algumas alterções.
+        module.exports = {
+                entry: './src/main'   // o main foi para dentro da pasta src
+                output: {
+                    path: __dirname + '/public', // o arquivo não será mais mandado para raiz e sim para a pasta public
+                    filename: 'bundle.js'
+                },
+                devServer: {
+                    contentBase: __dirname + '/public'
+                },
+                module: {
+                    rules: [
+                        {
+                            test: /\.js$/
+                            exclude : /node_modules/,
+                            use: {
+                                loader: 'babel-loader',
+                            }
+
+                        }
+                    ],
+                },
+            };
+                devServer:
+                    contentBase : caminho onde sera inicializado o servidor
+
+    Necessario fazer a instalação do devServer
+        yarn add webpack-dev-server -D // instalado como dependencia de desenvolvimento
+    
+    O arquivo "package.json" sobre algumas alterações no script dev:
+        "dev" : "webpack-dev-server --mode=development"
+
+    O arquivo "bundle" em modo de desenvolvimento fica imbutido no arquivo main.
+    Para que ele apareça é necessario colocar em modo de produção.
+    Assim pode ser criado um novo script para produção:
+        no arquivo "package.json"
+            "build" : "webpack --mode=production"
+
+    
+++++---  Async /\ await  ---++++
+    Para utilizar essa funcção do ES8 é necessario instalar um novo plugin no babel.
+    Necessario instalar o plugin:
+        yarn add @babel/plugin-transform-async-to-generator -D
+        yarn add @babel/polyfill -D
+        
+    Abrindo o arquivo ".babelrc" deve ser adicionado o novo plugin instalado.
+        "plugins": [ 
+            "@babel/plugin-transform-async-to-generator"
+        ]
+    
+    E o "Polyfill" deve ser adicionado em outro local.
+        O "polyfill" precisara carregar antes do main, sendo necessario especificar isso no arquivo
+        "webpack.config.js":
+            na linha entry:
+                entry: ['@babel/polyfill', './src/main.js'],
+
+
+++++---  axios ---++++
+
+    Para utilizar o axios é necessario instalar a dependencia dele:
+        yarn add axios
+            não necessita de "-D" por conta de não ser uma dependencia de desenvolvimento
+
+
+
+                
+
+
+
+
+
