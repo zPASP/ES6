@@ -172,7 +172,8 @@ Na raiz da pasta é executado um terminal e se chama o script para ficar escutan
 
     Para utilizar o axios é necessario instalar a dependencia dele:
         yarn add axios
-            não necessita de "-D" por conta de não ser uma dependencia de desenvolvimento
+            não necessita de "-D" por conta de não ser uma dependencia de desenvolvimento.
+        
 
 
 
